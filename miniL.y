@@ -488,7 +488,6 @@ RelationExpresses:	RelationExpress{
                 //printf("hello3.5\n");
                 node->code = node1->code;
                 //printf("hello3\n");
-                
                 $$ = node;
               }
 		            | RelationExpress AND RelationExpresses {
@@ -733,6 +732,8 @@ expressionLoop: {
 int Generator::counter_label = 0;
 int Generator::counter_var = 0;
 
+bool flag = true;
+
 int main(int argc, char **argv) {
    if(argc == 2)
         yyin = fopen(argv[1], "r");
@@ -741,6 +742,9 @@ int main(int argc, char **argv) {
    yyparse();
    //print_symbol_table();
    
+   if(flag == false){
+     return 0;
+   }
    file << out.str();
    std::cout << out.str() << std::endl;
    return 0;
@@ -749,5 +753,5 @@ int main(int argc, char **argv) {
 void yyerror(const char *msg) {
     /* implement your error handling */
     printf("** Line %d, col %d: %s\n", curLn, curPos, msg);
-    exit(1);
+    flag = false;
 }
